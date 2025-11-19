@@ -10,7 +10,9 @@ app.use(express.json());
 dotenv.config();
 
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI, {
+    dbName: "activeInventoryDatabase"
+})
   .then(() => {
     console.log("Connected to MongoDB");
   })
