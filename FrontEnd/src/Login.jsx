@@ -13,7 +13,7 @@ export default function Login() {
     e.preventDefault();
     setError(null);
     try {
-        const res = await fetch(getFullURL("/login"), {
+        const res = await fetch(getFullURL("/users/login"), {
             method: "POST",
             headers: {"Content-type": "application/json"},
             body: JSON.stringify({email, password})

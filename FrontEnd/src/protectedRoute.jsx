@@ -1,5 +1,5 @@
 import {Navigate, Outlet, useLocation} from "react-router-dom";
-import {isLoggedIn} from "./auth.jsx";
+import {isLoggedIn} from "./auth";
 import {useEffect} from "react";
 
 export default function ProtectedRoute(){
@@ -10,7 +10,7 @@ export default function ProtectedRoute(){
     if(isLoggedIn()){
         return <Outlet />;
     } else {
-        return <Navigate to="/login" state={{from: location}} replace />;
+        return <Navigate to="login" state={{from: location}} replace />;
     }
     return <Outlet />;
 }
