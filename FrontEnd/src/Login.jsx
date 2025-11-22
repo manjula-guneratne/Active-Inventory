@@ -6,38 +6,42 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/dashboard";
- const navigate = useNavigate();
 
   async function handleLoginFormSubmission(e) {
     e.preventDefault();
-    setError(null);
-    try {
-        const res = await fetch(getFullURL("/users/login"), {
-            method: "POST",
-            headers: {"Content-type": "application/json"},
-            body: JSON.stringify({email, password})
-        })
+    setError("");
 
-        if(! res.ok) {
-            throw new Error (await res.json() || "Login failed")
-        }
-        const data = await res.json();
-        const token = data.token;
-        console.log("token", token);
-        saveToken(token);
-        navigate(from, {replace: true})
-    } catch(error) {
-        setError(error.message || "Login Failed")
+    try {
+      const res = await fetch(getFullURL("/users/login"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      const token = data.data.accessToken;
+      saveToken(token); // store token
+      navigate(from, { replace: true }); // redirect
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Login failed");
     }
   }
 
   return (
     <div>
       <h2>Login Page</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleLoginFormSubmission}>
         <label>
-          email <br />
+          Email <br />
           <input
             required
             value={email}
@@ -45,11 +49,11 @@ export default function Login() {
           />
         </label>
         <br />
-
         <label>
-          password <br />
+          Password <br />
           <input
             required
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
