@@ -11,7 +11,7 @@ export default function PartsList() {
   const [formData, setFormData] = useState(null);
   const [message, setMessage] = useState("");
 
-  // handle POSt to parts list
+  // handle POST to parts list
   const handleSubmit = async (e) => {
     // Fetch parts list from backend API
     e.preventDefault();

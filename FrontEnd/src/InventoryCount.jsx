@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { getFullURL } from "./auth";
 
-export default function PartsList() {
+export default function InventoryCount() {
   const [shelfId, setshelfId] = useState("");
   const [orderId, setorderId] = useState("");
   const [dateOrdered, setdateOrdered] = useState("");
@@ -12,9 +12,9 @@ export default function PartsList() {
   const [formData, setFormData] = useState(null);
   const [message, setMessage] = useState("");
 
-  // handle POSt to parts list
+  // handle POST to inventory count
   const handleSubmit = async (e) => {
-    // Fetch parts list from backend API
+    // Fetch inventory count from backend API
     e.preventDefault();
     try {
       const res = await fetch(getFullURL("/inventoryCount/post"), {
@@ -100,9 +100,9 @@ export default function PartsList() {
       <h3>Display Parts</h3>
       <button onClick={handleDisplay}>Show All Parts</button>
 
-      {allparts.length > 0 && (
+      {allInventory.length > 0 && (
         <ul>
-          {allparts.map((part, index) => (
+          {allInventory.map((part, index) => (
             <li key={part.shelf_id || index}>
               Shelf ID: {part.shelf_id}, date ordered: {part.date_ordered},
               order_id: {part.order_id}, Quantity: {part.qty}   
