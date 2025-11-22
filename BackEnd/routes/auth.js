@@ -1,19 +1,23 @@
-const express = require("express");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const User = require("../models/User"); 
+// const express = require("express");
+// const jwt = require("jsonwebtoken");
+// const bcrypt = require("bcrypt");
+// const User = require("../models/User.js"); 
+import express from "express";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import User from "../models/User.js";
 
 const router = express.Router();
 
 // Sign JWT token
 const signAccessToken = (userId) => {
   return jwt.sign({ sub: userId }, process.env.JWT_SECRET, {
-    expiresIn: Number(process.env.JWT_EXPIRES_IN),
+    expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
 
 // Middleware to protect routes
-const requireAuth = async (req, res, next) => {
+export const requireAuth = async (req, res, next) => {
   try {
     const authHeader = req.headers.token;
 
@@ -68,17 +72,25 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log("Login attempt:", { email, password });
+
     if (!email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
     const user = await User.findOne({ email });
+    console.log("User found:", user);
+
     if (!user) return res.status(400).json({ message: "EMAIL_NOT_FOUND" });
 
     const passwordMatch = await bcrypt.compare(password, user.password);
+    console.log("Password match?", passwordMatch);
+
     if (!passwordMatch) return res.status(401).json({ message: "BAD_PASSWORD" });
 
     const token = signAccessToken(user._id);
+    console.log("Token generated:", token);
+
     res.status(200).json({
       status: "ok",
       data: {
@@ -104,4 +116,4 @@ router.get("/dashboard", requireAuth, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

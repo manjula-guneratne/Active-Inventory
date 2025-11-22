@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import cors from "cors";
 import authRoutes from "./routes/auth.js";
 import inventoryRoutes from "./routes/inventory.js";
 import dateOrderRoutes from "./routes/dateOrder.js";
@@ -8,6 +9,13 @@ import dateOrderRoutes from "./routes/dateOrder.js";
 const app = express();
 app.use(express.json());
 dotenv.config();
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 mongoose
   .connect(process.env.MONGO_URI, {
