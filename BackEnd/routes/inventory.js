@@ -3,7 +3,7 @@ import InventoryCount from "../models/InventoryCount.js";
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+router.post("/post/", async (req, res) => {
   try {
     const { my_id, order_id, qty, date_ordered } = req.body;
 
@@ -21,6 +21,19 @@ router.post("/", async (req, res) => {
     if (err.code === 11000) {
       return res.status(400).json({ message: "my_id must be unique" });
     }
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.get("/", async (req, res) => {
+  try {
+    const inventoryCounts = await InventoryCount.find();
+    res.status(200).json({
+      message: "InventoryCounts retrieved successfully",
+      data: inventoryCounts,
+    });
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 });
