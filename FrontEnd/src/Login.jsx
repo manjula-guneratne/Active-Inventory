@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { getFullURL, saveToken } from "./auth";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -8,6 +9,13 @@ export default function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/dashboard";
+
+  // Clear email/password on component mount
+  // useEffect(() => {
+  //   setEmail("");
+  //   setPassword("");
+  //   setError("");
+  // }, []);
 
   async function handleLoginFormSubmission(e) {
     e.preventDefault();
@@ -28,6 +36,11 @@ export default function Login() {
 
       const token = data.data.accessToken;
       saveToken(token); // store token
+
+      // // Clear email and password fields
+      // setEmail("");
+      // setPassword("");
+
       navigate(from, { replace: true }); // redirect
     } catch (err) {
       console.error(err);
@@ -46,6 +59,7 @@ export default function Login() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="new-email"
           />
         </label>
         <br />
@@ -56,6 +70,7 @@ export default function Login() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="new-password"
           />
         </label>
         <br />
