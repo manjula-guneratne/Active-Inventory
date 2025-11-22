@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { authFetch, getFullURL } from "./auth";
+import ItemList from "./ItemList";
+import InventoryCount from "./InventoryCount";
 
 export default function Dashboard() {
   const [userData, setUserData] = useState(null);
@@ -28,17 +31,14 @@ export default function Dashboard() {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div>
-      <h1>Dashboard Page</h1>
-      {userData ? (
-        <div>
-          <p>Email: {userData.email}</p>
-          <p>Name: {userData.name}</p>
-          <p>Created At: {new Date(userData.createdAt).toLocaleString()}</p>
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
-    </div>
+    <>
+      <h2>This is the Dashboard</h2>
+      <p>
+        <Link to="/itemList">Item List</Link>
+      </p>
+      <p>
+        <Link to="/inventoryCount">Inventory Count</Link>
+      </p>
+    </>
   );
 }

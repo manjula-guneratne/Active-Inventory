@@ -3,7 +3,8 @@ import Login from "./Login";
 import Home from "./Home";
 import ProtectedRoute from "./protectedRoute";
 import Dashboard from "./Dashboard";
-import Profile from "./Profile";
+import ItemList from "./ItemList";
+import InventoryCount from "./InventoryCount";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -12,7 +13,8 @@ const router = createBrowserRouter([
     element: <ProtectedRoute />,
     children: [
       { path: "/dashboard", element: <Dashboard /> },
-      { path: "/profile", element: <Profile /> },
+      { path: "/itemList", element: <ItemList /> },
+      { path: "/inventoryCount", element: <InventoryCount /> },
     ],
   },
 ]);
