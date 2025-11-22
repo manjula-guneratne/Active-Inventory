@@ -70,6 +70,7 @@ export default function InventoryCount() {
         <label>
           date ordered: <br />
           <input
+            type="date"
             required
             value={dateOrdered}
             onChange={(e) => setdateOrdered(e.target.value)}
