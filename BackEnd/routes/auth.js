@@ -72,24 +72,20 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log("Login attempt:", { email, password });
 
     if (!email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
     const user = await User.findOne({ email });
-    console.log("User found:", user);
 
     if (!user) return res.status(400).json({ message: "EMAIL_NOT_FOUND" });
 
     const passwordMatch = await bcrypt.compare(password, user.password);
-    console.log("Password match?", passwordMatch);
 
     if (!passwordMatch) return res.status(401).json({ message: "BAD_PASSWORD" });
 
     const token = signAccessToken(user._id);
-    console.log("Token generated:", token);
 
     res.status(200).json({
       status: "ok",

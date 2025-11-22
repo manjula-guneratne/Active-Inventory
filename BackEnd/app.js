@@ -30,8 +30,8 @@ mongoose
   });
 
 app.use("/users", authRoutes);
-app.use("/inventory-count", inventoryRoutes);
-app.use("/date-orders", dateOrderRoutes);
+app.use("/inventoryCount", inventoryRoutes);
+app.use("/dateOrders", dateOrderRoutes);
 app.use("/parts", partsRoutes);
 
 app.listen(process.env.PORT, () => {
