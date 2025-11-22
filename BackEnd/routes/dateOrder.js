@@ -13,11 +13,15 @@ router.post("/", async (req, res) => {
     }
 
     // Create the document
+    /*
     const newOrder = await DateOrder.create({
       order_id,
       date_ordered: new Date(date_ordered), // ensure it's a Date
     });
+    */
 
+    const newOrder = await DateOrder.create({ order_id, date_ordered });
+    
     res.status(201).json({
       message: "DateOrder created successfully",
       data: newOrder,

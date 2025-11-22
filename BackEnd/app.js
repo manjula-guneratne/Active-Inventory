@@ -5,6 +5,7 @@ import cors from "cors";
 import authRoutes from "./routes/auth.js";
 import inventoryRoutes from "./routes/inventory.js";
 import dateOrderRoutes from "./routes/dateOrder.js";
+import partsRoutes from "./routes/parts.js";
 
 const app = express();
 app.use(express.json());
@@ -31,6 +32,7 @@ mongoose
 app.use("/users", authRoutes);
 app.use("/inventory-count", inventoryRoutes);
 app.use("/date-orders", dateOrderRoutes);
+app.use("/parts", partsRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);

@@ -5,14 +5,13 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
   try {
-    const { my_id, order_id, qty } = req.body;
+    const { my_id, order_id, qty, date_ordered } = req.body;
 
-    if (!my_id || !order_id || !qty) {
-      return res.status(400).json({ message: "my_id, order_id, and qty are required" });
+    if (!my_id || !order_id || !qty || !date_ordered) {
+      return res.status(400).json({ message: "my_id, order_id, qty, and date_ordered are required" });
     }
 
-    const newInventory = await InventoryCount.create({ my_id, order_id, qty });
-
+    const newInventory = await InventoryCount.create({ my_id, order_id, qty, date_ordered });
     res.status(201).json({
       message: "InventoryCount created successfully",
       data: newInventory,

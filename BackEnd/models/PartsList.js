@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 
 const partsListSchema = new mongoose.Schema(
   {
-    my_id: { type: Number, required: true, unique: true },
-    order_id: { type: Number, required: true, ref: "Order" },
-    qty: { type: Number, required: true },
+    shelf_id: { type: Number, required: true, unique: true, ref: "Order" },
+    part_no: { type: String, required: true },
+    description: { type: String, required: true },
   },
   { timestamps: true }
 );
