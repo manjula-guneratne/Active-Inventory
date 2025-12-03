@@ -3,15 +3,24 @@ import InventoryCount from "../models/InventoryCount.js";
 
 const router = express.Router();
 
-router.post("/post/", async (req, res) => {
+router.post("/post", async (req, res) => {
   try {
     const { shelf_id, order_id, qty, date_ordered } = req.body;
+
+    //Testing log
+    console.log("BODY RECEIVED:", req.body);
 
     if (!shelf_id || !order_id || !qty || !date_ordered) {
       return res.status(400).json({ message: "shelf_id, order_id, qty, and date_ordered are required" });
     }
 
-    const newInventory = await InventoryCount.create({ shelf_id, order_id, qty, date_ordered });
+    const newInventory = await InventoryCount.create({
+      shelf_id: Number(shelf_id),
+      order_id: Number(order_id),
+      qty: Number(qty),
+      date_ordered: new Date(date_ordered),
+    });
+
     res.status(201).json({
       message: "InventoryCount created successfully",
       data: newInventory,
