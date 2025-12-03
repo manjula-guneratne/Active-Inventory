@@ -21,14 +21,20 @@ export default function InventoryCount() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          shelf_id: shelfId,
-          order_id: orderId,
-          qty: qty,
-          date_ordered: dateOrdered,
+          shelf_id: Number(shelfId),
+          order_id: Number(orderId),
+          qty: Number(qty),
+          date_ordered: new Date(dateOrdered + "T00:00:00")
         }),
       });
 
       const data = await res.json();
+
+      if (!res.ok) {
+        setMessage(data.message || "Something went wrong");
+        return;
+      }
+
       setMessage(data.message || "Inventory count added successfully");
       setFormData(data.data || null);
 
@@ -106,9 +112,9 @@ export default function InventoryCount() {
           {allInventory.map((part, index) => (
             <li key={part.shelf_id || index}>
               Shelf ID: {part.shelf_id}, date ordered: {part.date_ordered},
-              order_id: {part.order_id}, Quantity: {part.qty}   
+              order_id: {part.order_id}, Quantity: {part.qty}
             </li>
-          ))}   
+          ))}
         </ul>
       )}
     </div>
