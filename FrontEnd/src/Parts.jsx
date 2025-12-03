@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { getFullURL } from "./auth";
+// import {button} from 'react-bootstrap';
 
 export default function PartsList() {
   const [shelfId, setshelfId] = useState("");
@@ -16,7 +17,7 @@ export default function PartsList() {
     // Fetch parts list from backend API
     e.preventDefault();
     try {
-      const res = await fetch(getFullURL("/parts/post"), {
+      const res = await fetch(getFullURL("/post"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

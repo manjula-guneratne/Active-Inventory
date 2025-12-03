@@ -10,13 +10,6 @@ export default function Login() {
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/dashboard";
 
-  // Clear email/password on component mount
-  // useEffect(() => {
-  //   setEmail("");
-  //   setPassword("");
-  //   setError("");
-  // }, []);
-
   async function handleLoginFormSubmission(e) {
     e.preventDefault();
     setError("");
@@ -36,10 +29,6 @@ export default function Login() {
 
       const token = data.data.accessToken;
       saveToken(token); // store token
-
-      // // Clear email and password fields
-      // setEmail("");
-      // setPassword("");
 
       navigate(from, { replace: true }); // redirect
     } catch (err) {

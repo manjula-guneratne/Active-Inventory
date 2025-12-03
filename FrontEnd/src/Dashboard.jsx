@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { authFetch, getFullURL } from "./auth";
-import PartsList from "./PartsList";
+import PartsList from "./Parts";
 import InventoryCount from "./InventoryCount";
 
 export default function Dashboard() {
@@ -34,7 +34,7 @@ export default function Dashboard() {
     <>
       <h2>This is the Dashboard</h2>
       <p>
-        <Link to="/partsList">Parts List</Link>
+        <Link to="/parts">Parts List</Link>
       </p>
       <p>
         <Link to="/inventoryCount">Inventory Count</Link>

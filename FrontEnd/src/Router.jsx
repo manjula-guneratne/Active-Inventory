@@ -3,7 +3,7 @@ import Login from "./Login";
 import Home from "./Home";
 import ProtectedRoute from "./protectedRoute";
 import Dashboard from "./Dashboard";
-import PartsList from "./PartsList";
+import Parts from "./Parts";
 import InventoryCount from "./InventoryCount";
 
 const router = createBrowserRouter([
@@ -13,7 +13,7 @@ const router = createBrowserRouter([
     element: <ProtectedRoute />,
     children: [
       { path: "/dashboard", element: <Dashboard /> },
-      { path: "/partsList", element: <PartsList /> },
+      { path: "/parts", element: <Parts /> },
       { path: "/inventoryCount", element: <InventoryCount /> },
     ],
   },

@@ -1,6 +1,7 @@
-import {Navigate, Outlet, useLocation} from "react-router-dom";
+import {Navigate, useLocation} from "react-router-dom";
 import {isLoggedIn} from "./auth";
 import {useEffect} from "react";
+import Layout from "./Layout";
 
 export default function ProtectedRoute(){
     useEffect(() => {
@@ -8,9 +9,9 @@ export default function ProtectedRoute(){
     }, []);
     const location = useLocation();
     if(isLoggedIn()){
-        return <Outlet />;
+        return <Layout />;
     } else {
         return <Navigate to="login" state={{from: location}} replace />;
     }
-    return <Outlet />;
+    return <Layout />;
 }
