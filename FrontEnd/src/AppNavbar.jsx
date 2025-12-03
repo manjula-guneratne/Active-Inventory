@@ -24,9 +24,9 @@ const handleLogout = () => {
         <BSNavbar.Toggle aria-controls="basic-navbar-nav" />
         <BSNavbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto ms-4">
-            <Nav.Link as={NavLink} to="/dashboard" className="nav-link">Dashboard</Nav.Link>
-            <Nav.Link as={NavLink} to="/parts" className="nav-link">Parts</Nav.Link>
-            <Nav.Link as={NavLink} to="/inventoryCount" className="nav-link">Inventory Count</Nav.Link>
+            <Nav.Link as={NavLink} to="/dashboard" >Dashboard</Nav.Link>
+            <Nav.Link as={NavLink} to="/parts" >Parts</Nav.Link>
+            <Nav.Link as={NavLink} to="/inventoryCount" >Inventory Count</Nav.Link>
           </Nav>
 
         <Nav className="ms-auto me-4">

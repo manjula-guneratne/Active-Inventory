@@ -5,10 +5,16 @@ import ProtectedRoute from "./protectedRoute";
 import Dashboard from "./Dashboard";
 import Parts from "./Parts";
 import InventoryCount from "./InventoryCount";
+import PublicLayout from "./PublicLayout";
 
 const router = createBrowserRouter([
-  { path: "/", element: <Home /> },
-  { path: "/login", element: <Login /> },
+  { 
+    element: <PublicLayout />,
+    children: [
+      { path: "/", element: <Home /> },
+      { path: "/login", element: <Login /> }
+    ],
+  },
   {
     element: <ProtectedRoute />,
     children: [
