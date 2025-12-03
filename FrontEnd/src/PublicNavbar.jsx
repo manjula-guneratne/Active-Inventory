@@ -31,7 +31,7 @@ export default function PublicNavbar() {
               Login
             </Nav.Link>
             {/* NOT created yet */}
-            <Nav.Link as={NavLink} to="/">
+            <Nav.Link as={NavLink} to="/signup">
               Signup
             </Nav.Link>
           </Nav>
