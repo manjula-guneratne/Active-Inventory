@@ -15,6 +15,11 @@
   object-fit: contain;
 }
 
+.nav-link[aria-current="page"] {
+  text-decoration: underline wavy #1968A0 0.15rem;
+  text-underline-offset: 0.5rem;
+}
+
 /* 
 .logo {
   height: 6em;

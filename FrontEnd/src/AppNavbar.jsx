@@ -1,30 +1,39 @@
 import { Navbar as BSNavbar, Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { Row, Col } from "react-bootstrap";
-import Logo from "./assets/Logo.jpg";
+import { NavLink, useNavigate } from "react-router-dom";
+import Nav from "react-bootstrap/Nav";
+import Button from "react-bootstrap/Button";
+import Logo from "./assets/Logo_resized.png";
+
 
 export default function AppNavbar() {
+const navigate = useNavigate();
+
+const handleLogout = () => {
+    localStorage.removeItem("at");
+    navigate("/login");
+  }
+
   return (
     <BSNavbar bg="dark" variant="dark">
       <Container>
+        <BSNavbar.Brand as={NavLink} to="/" className="ms-4">
+          <img src={Logo} alt="Active Inventory Logo" /><span style={{ display: "inline-block", width: "30px" }}></span>
+          Active Inventory
+        </BSNavbar.Brand>
 
-          <BSNavbar.Brand as={Link} to="/" className="ms-4">
-          <img src={Logo} alt="Active Inventory Logo" />
-            
-          </BSNavbar.Brand>
+        <BSNavbar.Toggle aria-controls="basic-navbar-nav" />
+        <BSNavbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto ms-4">
+            <Nav.Link as={NavLink} to="/dashboard" className="nav-link">Dashboard</Nav.Link>
+            <Nav.Link as={NavLink} to="/parts" className="nav-link">Parts</Nav.Link>
+            <Nav.Link as={NavLink} to="/inventoryCount" className="nav-link">Inventory Count</Nav.Link>
+          </Nav>
 
-          <Link to="/dashboard" className="ms-4 text-white text-decoration-none">
-            Dashboard
-          </Link>
-
-          <Link to="/inventoryCount" className="ms-4 text-white text-decoration-none">
-            Inventory Count
-          </Link>
-
-          <Link to="/parts" className="ms-4 text-white text-decoration-none">
-            Parts
-          </Link>
-
+        <Nav className="ms-auto me-4">
+          {/* Logout */}
+          <Button variant="outline-light" size="sm" onClick={handleLogout}>Logout</Button>
+        </Nav>  
+        </BSNavbar.Collapse>
       </Container>
     </BSNavbar>
   );

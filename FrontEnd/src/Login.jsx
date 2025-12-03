@@ -10,6 +10,11 @@ export default function Login() {
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/dashboard";
 
+  useEffect(() => {
+    localStorage.removeItem("at");
+    navigate("/login");
+  }, []);
+
   async function handleLoginFormSubmission(e) {
     e.preventDefault();
     setError("");
