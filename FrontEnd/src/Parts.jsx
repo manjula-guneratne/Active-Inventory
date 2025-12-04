@@ -17,7 +17,7 @@ export default function PartsList() {
     // Fetch parts list from backend API
     e.preventDefault();
     try {
-      const res = await fetch(getFullURL("/post"), {
+      const res = await fetch(getFullURL("/parts/post"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
