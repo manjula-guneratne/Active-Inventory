@@ -1,16 +1,33 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import { getFullURL } from "./auth";
 
 export default function InventoryCount() {
-  const [shelfId, setshelfId] = useState("");
   const [orderId, setorderId] = useState("");
+  const [shelfIdlist, setShelfIdlist] = useState([]);
+
   const [dateOrdered, setdateOrdered] = useState("");
-  const [qty, setQty] = useState("");
+  const [items, setItems] = useState(
+    Array.from({ length: 3 }, () => ({ shelfId: "", qty: "" }))
+  );
 
   const [allInventory, setallInventory] = useState([]);
-
   const [formData, setFormData] = useState(null);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    async function fetchShelfIds() {
+      try {
+        const res = await fetch(getFullURL("/inventoryCount/shelf-ids"));
+        const data = await res.json();
+        setShelfIdlist(data.data || []);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    fetchShelfIds();
+  }, []);
 
   // handle POST to inventory count
   const handleSubmit = async (e) => {
@@ -21,10 +38,9 @@ export default function InventoryCount() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          shelf_id: Number(shelfId),
           order_id: Number(orderId),
-          qty: Number(qty),
-          date_ordered: new Date(dateOrdered + "T00:00:00")
+          date_ordered: new Date(dateOrdered + "T00:00:00"),
+          items: items,
         }),
       });
 
@@ -39,14 +55,24 @@ export default function InventoryCount() {
       setFormData(data.data || null);
 
       // Clear form after successful submission
-      setshelfId("");
       setorderId("");
-      setQty("");
       setdateOrdered("");
+      setItems(Array.from({ length: 3 }, () => ({ shelfId: "", qty: "" })));
     } catch (err) {
       console.error(err);
     }
   };
+
+  //Added function to display all inventory counts
+  function handleChange(index, field, value) {
+    const newItems = [...items];
+    newItems[index][field] = value;
+    setItems(newItems);
+  }
+
+  function addRow() {
+    setItems([...items, { shelfId: "", qty: "" }]);
+  }
 
   const handleDisplay = async () => {
     try {
@@ -64,42 +90,78 @@ export default function InventoryCount() {
     <div>
       <h1>Inventory Count</h1>
       <form onSubmit={handleSubmit}>
-        <label>
-          Shelf ID: <br />
-          <input
-            required
-            value={shelfId}
-            onChange={(e) => setshelfId(e.target.value)}
-          />
-        </label>
+        <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+          <label>
+            order_id: <br />
+            <input
+              required
+              value={orderId}
+              onChange={(e) => setorderId(e.target.value)}
+            />
+          </label>
+          <br />
+          <label>
+            date ordered: <br />
+            <input
+              type="date"
+              required
+              value={dateOrdered}
+              onChange={(e) => setdateOrdered(e.target.value)}
+            />
+          </label>
+        </div>
+        <div style={{ display: "flex", gap: "165px", marginBottom: "10px" }}>
+          <div>
+            <strong> Shelf ID</strong>
+          </div>
+          <div>
+            <strong>Quantity</strong>
+          </div>
+        </div>
+        {items.map((item, index) => (
+          <div
+            key={index}
+            style={{
+              display: "flex",
+              gap: "30px",
+              marginBottom: "10px",
+              backgroundColor: "#f0f0f0",
+              padding: "10px",
+              borderRadius: "5px",
+            }}
+          >
+            <select
+              value={item.shelfId}
+              onChange={(e) => handleChange(index, "shelfId", e.target.value)}
+            >
+              <option value="">Select Shelf</option>
+
+              {shelfIdlist.map((id) => {
+                const isUsed = items.some(
+                  (item, i) =>
+                    String(item.shelfId) === String(id) && i !== index
+                );
+
+                return (
+                  <option key={id} value={String(id)} disabled={isUsed}>
+                    {id}
+                  </option>
+                );
+              })}
+            </select>
+            <input
+              type="number"
+              placeholder="Quantity"
+              value={item.qty}
+              onChange={(e) => handleChange(index, "qty", e.target.value)}
+            />
+          </div>
+        ))}
+        <button type="button" onClick={addRow}>
+          Add Row
+        </button>
         <br />
-        <label>
-          date ordered: <br />
-          <input
-            type="date"
-            required
-            value={dateOrdered}
-            onChange={(e) => setdateOrdered(e.target.value)}
-          />
-        </label>
         <br />
-        <label>
-          order_id: <br />
-          <input
-            required
-            value={orderId}
-            onChange={(e) => setorderId(e.target.value)}
-          />
-        </label>
-        <br />
-        <label>
-          Quantity: <br />
-          <input
-            required
-            value={qty}
-            onChange={(e) => setQty(e.target.value)}
-          />
-        </label>
         <br />
         <button type="submit">Add Part</button>
       </form>
@@ -111,8 +173,8 @@ export default function InventoryCount() {
         <ul>
           {allInventory.map((part, index) => (
             <li key={part.shelf_id || index}>
-              Shelf ID: {part.shelf_id}, date ordered: {part.date_ordered},
-              order_id: {part.order_id}, Quantity: {part.qty}
+              order_id: {part.order_id}, date ordered: {part.date_ordered},
+              shelf_id: {part.shelf_id}, Quantity: {part.qty}
             </li>
           ))}
         </ul>

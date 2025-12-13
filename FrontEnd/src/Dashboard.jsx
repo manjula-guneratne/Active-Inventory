@@ -37,7 +37,7 @@ export default function Dashboard() {
         <Link to="/parts">Add new Part</Link>
       </p>
       <p>
-        <Link to="/inventoryCount">Inventory Count</Link>
+        <Link to="/inventoryCount">Enter Inventory Count</Link>
       </p>
     </>
   );
