@@ -7,6 +7,7 @@ import Dashboard from "./Dashboard";
 import Parts from "./Parts";
 import InventoryCount from "./InventoryCount";
 import PublicLayout from "./PublicLayout";
+import DisplayParts from "./DisplayParts";
 
 const router = createBrowserRouter([
   { 
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
       { path: "/dashboard", element: <Dashboard /> },
       { path: "/parts", element: <Parts /> },
       { path: "/inventoryCount", element: <InventoryCount /> },
+      { path: "/displayParts", element: <DisplayParts /> }
     ],
   },
 ]);

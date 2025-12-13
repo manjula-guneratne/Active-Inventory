@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { authFetch, getFullURL } from "./auth";
 import PartsList from "./Parts";
 import InventoryCount from "./InventoryCount";
+import DisplayParts from "./DisplayParts";
 
 export default function Dashboard() {
   const [userData, setUserData] = useState(null);
@@ -38,6 +39,9 @@ export default function Dashboard() {
       </p>
       <p>
         <Link to="/inventoryCount">Enter Inventory Count</Link>
+      </p>
+      <p>
+        <Link to="/displayParts">Display Parts</Link>
       </p>
     </>
   );

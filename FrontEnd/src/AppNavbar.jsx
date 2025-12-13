@@ -27,6 +27,7 @@ const handleLogout = () => {
             <Nav.Link as={NavLink} to="/dashboard" >Dashboard</Nav.Link>
             <Nav.Link as={NavLink} to="/parts" >Parts</Nav.Link>
             <Nav.Link as={NavLink} to="/inventoryCount" >Inventory Count</Nav.Link>
+            <Nav.Link as={NavLink} to="/displayParts" >Display Parts</Nav.Link>
           </Nav>
 
         <Nav className="ms-auto me-4">

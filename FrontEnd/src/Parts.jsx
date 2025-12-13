@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import { getFullURL } from "./auth";
 // import {button} from 'react-bootstrap';
 
@@ -68,7 +69,7 @@ export default function PartsList() {
             <label>
               Shelf ID:
               <br />
-              <select
+              {/* <select
                 required
                 value={shelfId}
                 onChange={(e) => setshelfId(e.target.value)}
@@ -79,9 +80,13 @@ export default function PartsList() {
                     {part.shelf_id} — {part.part_no}
                   </option>
                 ))}
-              </select>
+              </select>*/}
+              <input
+                required
+                value={shelfId}
+                onChange={(e) => setshelfId(e.target.value)}
+              />
             </label>
-
             <br />
             <label>
               Part Number: <br />
