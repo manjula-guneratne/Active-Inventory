@@ -51,6 +51,14 @@ export default function InventoryCount() {
         return;
       }
 
+      // Shelves that not add successfully
+      if (data.errors && data.errors.length > 0) {
+        alert(
+          "Some shelves were not added:\n" +
+            data.errors.map((e) => `Shelf ${e.shelf_id}: ${e.error}`).join("\n")
+        );
+      }
+
       setMessage(data.message || "Inventory count added successfully");
       setFormData(data.data || null);
 
@@ -58,6 +66,9 @@ export default function InventoryCount() {
       setorderId("");
       setdateOrdered("");
       setItems(Array.from({ length: 3 }, () => ({ shelfId: "", qty: "" })));
+
+      //Update the Display after submission
+      handleDisplay();
     } catch (err) {
       console.error(err);
     }
@@ -201,7 +212,7 @@ export default function InventoryCount() {
           {allInventory.length > 0 && (
             <div
               style={{
-                maxHeight: "50vh", // ~50 rows depending on row height
+                maxHeight: "50vh",
                 overflowY: "auto",
                 border: "1px solid #ccc",
                 marginTop: "10px",
