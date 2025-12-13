@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const partsListSchema = new mongoose.Schema(
   {
-    shelf_id: { type: Number, required: true, ref: "Order" },
+    shelf_id: { type: Number, required: true },
     part_no: { type: String, required: true },
     description: { type: String, required: true },
   },
