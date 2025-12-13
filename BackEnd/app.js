@@ -4,7 +4,6 @@ import mongoose from "mongoose";
 import cors from "cors";
 import authRoutes from "./routes/auth.js";
 import inventoryRoutes from "./routes/inventory.js";
-import dateOrderRoutes from "./routes/dateOrder.js";
 import partsRoutes from "./routes/parts.js";
 import displayPartsRoutes from "./routes/displayParts.js";
 
@@ -32,7 +31,6 @@ mongoose
 
 app.use("/users", authRoutes);
 app.use("/inventoryCount", inventoryRoutes);
-app.use("/dateOrders", dateOrderRoutes);
 app.use("/parts", partsRoutes);
 app.use("/displayParts", displayPartsRoutes);
 
