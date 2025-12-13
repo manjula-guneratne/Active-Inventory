@@ -60,6 +60,69 @@ export default function PartsList() {
     }
   };
 
+  const updatePart = async () => {
+    try {
+      if (!shelfId) {
+        setMessage("Shelf ID is required for update");
+        return;
+      }
+
+      const res = await fetch(getFullURL(`/parts/${shelfId}`), {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          part_no: partNo,
+          description: description,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setMessage(data.message || "Update failed");
+        return;
+      }
+
+      setMessage("Part updated successfully");
+      handleDisplay(); // refresh table
+    } catch (err) {
+      console.error(err);
+      setMessage("Server error");
+    }
+  };
+
+  const deletePart = async () => {
+    try {
+      if (!shelfId) {
+        setMessage("Shelf ID is required for delete");
+        return;
+      }
+
+      const res = await fetch(getFullURL(`/parts/${shelfId}`), {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setMessage(data.message || "Delete failed");
+        return;
+      }
+
+      setMessage("Part deleted successfully");
+      setallparts((prev) =>
+        prev.filter((p) => String(p.shelf_id) !== String(shelfId))
+      );
+
+      setshelfId("");
+      setpartNo("");
+      setdescription("");
+    } catch (err) {
+      console.error(err);
+      setMessage("Server error");
+    }
+  };
+
   return (
     <div>
       <div style={{ display: "flex", height: "100vh" }}>
@@ -107,8 +170,12 @@ export default function PartsList() {
                 style={{ resize: "vertical" }}
               />
             </label>
-            <br />
-            <button type="submit">Add Part</button>
+            <div style={{ display: "flex", gap: "10px" }}>
+              <button type="submit">Add Part</button>
+              <button onClick={updatePart}>Update Parts</button>
+              <button onClick={deletePart}>Clear Parts</button>
+            </div>
+            {message && <p>{message}</p>}
           </form>
         </div>
         <div style={{ flex: 1, backgroundColor: "#fff", padding: "20px" }}>
