@@ -54,7 +54,7 @@ export default function PartsList() {
 
   return (
     <div>
-      <h1>Parts List</h1>
+      <h1>Add New Part</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Shelf ID: <br />
@@ -76,10 +76,12 @@ export default function PartsList() {
         <br />
         <label>
           Description: <br />
-          <input
-            required
+          <textarea
             value={description}
             onChange={(e) => setdescription(e.target.value)}
+            rows={5} 
+            cols={50} 
+            style={{ resize: 'vertical' }} 
           />
         </label>
         <br />
