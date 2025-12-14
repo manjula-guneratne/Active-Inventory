@@ -19,7 +19,7 @@ const signAccessToken = (userId) => {
 // Middleware to protect routes
 export const requireAuth = async (req, res, next) => {
   try {
-    const authHeader = req.headers.token;
+    const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ message: "INVALID_TOKEN" });
