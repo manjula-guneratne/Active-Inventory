@@ -12,7 +12,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        const res = await authFetch(getFullURL("/users/dashboard"));
+        const res = await authFetch("/users/dashboard");
         const data = await res.json();
 
         if (!res.ok) {
