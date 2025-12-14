@@ -10,7 +10,7 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const results = await InventoryCount.aggregate([
-      // 1️⃣ Sum quantities per shelf
+      // Sum quantities per shelf
       {
         $group: {
           _id: "$shelf_id",
@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
         }
       },
 
-      // 2️⃣ Join with PartsList
+      // Join with PartsList
       {
         $lookup: {
           from: "partslists",
@@ -28,10 +28,10 @@ router.get("/", async (req, res) => {
         }
       },
 
-      // 3️⃣ Convert part array to object
+      // Convert part array to object
       { $unwind: "$part" },
 
-      // 4️⃣ Final shape
+      // Final shape
       {
         $project: {
           shelf_id: "$_id",
@@ -41,7 +41,7 @@ router.get("/", async (req, res) => {
         }
       },
 
-      // 5️⃣ Sort
+      // Sort
       { $sort: { shelf_id: 1 } }
     ]);
 
@@ -68,12 +68,12 @@ router.get("/:id", async (req, res) => {
     }
 
     const result = await InventoryCount.aggregate([
-      // 1️⃣ Filter to ONE shelf
+      // Filter to ONE shelf
       {
         $match: { shelf_id: shelfId }
       },
 
-      // 2️⃣ Sum quantity
+      //Sum quantity
       {
         $group: {
           _id: "$shelf_id",
@@ -81,7 +81,7 @@ router.get("/:id", async (req, res) => {
         }
       },
 
-      // 3️⃣ Join PartsList
+      // Join PartsList
       {
         $lookup: {
           from: "partslists",
@@ -91,10 +91,10 @@ router.get("/:id", async (req, res) => {
         }
       },
 
-      // 4️⃣ Flatten result
+      // Flatten result
       { $unwind: "$part" },
 
-      // 5️⃣ Final shape
+      // Final shape
       {
         $project: {
           shelf_id: "$_id",
