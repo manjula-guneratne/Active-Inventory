@@ -13,7 +13,7 @@ dotenv.config();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://your-frontend-name.onrender.com",    
     credentials: true,
   })
 );
@@ -34,6 +34,9 @@ app.use("/inventoryCount", inventoryRoutes);
 app.use("/parts", partsRoutes);
 app.use("/displayParts", displayPartsRoutes);
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
+
