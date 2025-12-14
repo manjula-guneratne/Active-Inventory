@@ -11,12 +11,25 @@ const app = express();
 app.use(express.json());
 dotenv.config();
 
+// app.use(cors());
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://active-inventory.onrender.com",
+];
+// Able to test locally and from deployed front-end
 app.use(
   cors({
-    origin: "https://your-frontend-name.onrender.com",    
-    credentials: true,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS not allowed"));
+      }
+    },
   })
 );
+
 
 mongoose
   .connect(process.env.MONGO_URI, {
