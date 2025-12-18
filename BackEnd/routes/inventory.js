@@ -10,11 +10,11 @@ const router = express.Router();
  */
 router.post("/post", async (req, res) => {
   try {
-    const { order_id, date_ordered, items } = req.body;
+    const { date_ordered, items } = req.body;
 
-    if (!order_id || !date_ordered || !Array.isArray(items)) {
+    if (!date_ordered || !Array.isArray(items)) {
       return res.status(400).json({
-        message: "order_id, date_ordered, and items[] are required",
+        message: "date_ordered, and items[] are required",
       });
     }
 
@@ -52,7 +52,6 @@ router.post("/post", async (req, res) => {
 
       inventoryToInsert.push({
         shelf_id: shelfValue,
-        order_id: Number(order_id),
         qty: Number(item.qty),
         date_ordered: new Date(date_ordered),
       });
@@ -90,6 +89,25 @@ router.get("/shelf-ids", async (req, res) => {
     res.status(200).json({
       message: "Shelf IDs retrieved successfully",
       data: shelfIds,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Get inventory by date_ordered
+router.get("/by-date/:date", async (req, res) => {
+  try {
+    const dateParam = req.params.date;
+
+    const inventoryCounts = await InventoryCount.find({
+      date_ordered: new Date(dateParam),
+    }).sort({ shelf_id: 1 });
+
+    res.status(200).json({
+      message: "Inventory retrieved successfully",
+      data: inventoryCounts,
     });
   } catch (err) {
     console.error(err);
