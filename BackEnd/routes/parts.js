@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Part = require("../models/PartsList");
+const InventoryCount = require("../models/InventoryCount");
 
 // POST /parts
 router.post("/post", async (req, res) => {
