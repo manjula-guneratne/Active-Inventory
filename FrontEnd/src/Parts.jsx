@@ -36,6 +36,9 @@ export default function PartsList() {
       });
 
       const data = await res.json();
+
+      await handleDisplay();
+
       setMessage(data.message || "Part added successfully");
       setFormData(data.data || null);
 
@@ -53,7 +56,10 @@ export default function PartsList() {
       const res = await fetch(getFullURL("/parts"));
       const data = await res.json();
 
-      setallparts(data.data || []);
+      // force a new array reference so React re-renders
+      setallparts([...(data.data || [])]);
+
+      //setallparts(data.data || []);
       setMessage(data.message || "Parts retrieved successfully");
     } catch (err) {
       console.error(err);
@@ -83,6 +89,8 @@ export default function PartsList() {
         return;
       }
 
+      await handleDisplay();
+
       setMessage("Part updated successfully");
       handleDisplay(); // refresh table
     } catch (err) {
@@ -91,7 +99,8 @@ export default function PartsList() {
     }
   };
 
-  const deletePart = async () => {
+  const deletePart = async (e) => {
+    e.preventDefault();
     try {
       if (!shelfId) {
         setMessage("Shelf ID is required for delete");
@@ -108,6 +117,8 @@ export default function PartsList() {
         setMessage(data.message || "Delete failed");
         return;
       }
+
+      // await handleDisplay();
 
       setMessage("Part deleted successfully");
       setallparts((prev) =>
@@ -128,22 +139,10 @@ export default function PartsList() {
       <div style={{ display: "flex", height: "100vh" }}>
         <div style={{ flex: 1, backgroundColor: "#f0f0f0", padding: "20px" }}>
           <h1>Add New Part</h1>
-          <form onSubmit={handleSubmit}>
+          <form>
             <label>
               Shelf ID:
               <br />
-              {/* <select
-                required
-                value={shelfId}
-                onChange={(e) => setshelfId(e.target.value)}
-              >
-                <option value="">-- Select Shelf --</option>
-                {shelves.map((part) => (
-                  <option key={part._id} value={part.shelf_id}>
-                    {part.shelf_id} — {part.part_no}
-                  </option>
-                ))}
-              </select>*/}
               <input
                 required
                 value={shelfId}
@@ -171,8 +170,8 @@ export default function PartsList() {
               />
             </label>
             <div style={{ display: "flex", gap: "10px" }}>
-              <button type="submit">Add Part</button>
-              <button onClick={updatePart}>Update Parts</button>
+              <button type="button" onClick={handleSubmit}>Add Part</button>
+              <button type="button" onClick={updatePart}>Update Parts</button>
               <button onClick={deletePart}>Clear Parts</button>
             </div>
             {message && <p>{message}</p>}
