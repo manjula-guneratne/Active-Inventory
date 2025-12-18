@@ -14,61 +14,26 @@ router.post("/post", async (req, res) => {
 
     if (!date_ordered || !Array.isArray(items)) {
       return res.status(400).json({
-        message: "date_ordered, and items[] are required",
+        message: "date_ordered and items are required",
       });
     }
 
-    // Remove empty rows
-    const validItems = items.filter(
-      (item) =>
-        item.shelfId &&
-        item.qty !== "" &&
-        !isNaN(item.qty) &&
-        Number(item.qty) >= 0
-    );
+    const docs = items.map(item => ({
+      shelf_id: item.shelfId,
+      qty: Number(item.qty) || 0,
+      date_ordered: new Date(date_ordered),
+    }));
 
-    if (validItems.length === 0) {
-      return res.status(400).json({
-        message: "At least one valid inventory row is required",
-      });
-    }
+    // Remove existing inventory for that date (shopping-list behavior)
+    await InventoryCount.deleteMany({
+      date_ordered: new Date(date_ordered),
+    });
 
-    const inventoryToInsert = [];
-    const errors = [];
+    // Insert full list
+    await InventoryCount.insertMany(docs);
 
-    // Validate each shelf independently
-    for (const item of validItems) {
-      const shelfValue = item.shelfId; // STRING (your DB uses strings)
-
-      const shelfExists = await Part.findOne({ shelf_id: shelfValue });
-
-      if (!shelfExists) {
-        errors.push({
-          shelf_id: shelfValue,
-          error: "Shelf does not exist",
-        });
-        continue; // skip this row
-      }
-
-      inventoryToInsert.push({
-        shelf_id: shelfValue,
-        qty: Number(item.qty),
-        date_ordered: new Date(date_ordered),
-      });
-    }
-
-    // Insert only valid rows
-    let inserted = [];
-    if (inventoryToInsert.length > 0) {
-      inserted = await InventoryCount.insertMany(inventoryToInsert);
-    }
-
-    // Final response
-    return res.status(201).json({
-      message: "Inventory processing completed",
-      insertedCount: inserted.length,
-      insertedShelves: inserted.map((i) => i.shelf_id),
-      errors, // ❗ per-shelf errors
+    res.status(201).json({
+      message: "Inventory count saved",
     });
 
   } catch (err) {
@@ -76,6 +41,7 @@ router.post("/post", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
 
 /**
  * GET /inventoryCount/shelf-ids
