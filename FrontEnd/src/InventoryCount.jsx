@@ -15,19 +15,19 @@ export default function InventoryCount() {
   const [formData, setFormData] = useState(null);
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    async function fetchShelfIds() {
-      try {
-        const res = await fetch(getFullURL("/inventoryCount/shelf-ids"));
-        const data = await res.json();
-        setShelfIdlist(data.data || []);
-      } catch (err) {
-        console.error(err);
-      }
-    }
+  // useEffect(() => {
+  //   async function fetchShelfIds() {
+  //     try {
+  //       const res = await fetch(getFullURL("/inventoryCount/shelf-ids"));
+  //       const data = await res.json();
+  //       setShelfIdlist(data.data || []);
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   }
 
-    fetchShelfIds();
-  }, []);
+  //   fetchShelfIds();
+  // }, []);
 
   // handle POST to inventory count
   const handleSubmit = async (e) => {
@@ -38,7 +38,6 @@ export default function InventoryCount() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          order_id: Number(orderId),
           date_ordered: new Date(dateOrdered + "T00:00:00"),
           items: items,
         }),
@@ -99,13 +98,18 @@ export default function InventoryCount() {
     setItems(newItems);
   }
 
-  function addRow() {
-    setItems([...items, { shelfId: "", qty: "" }]);
-  }
+  // function addRow() {
+  //   setItems([...items, { shelfId: "", qty: "" }]);
+  // }
 
   const handleDisplay = async () => {
+    if(!dateOrdered){
+      alert("Please select a date ordered to display inventory counts.");
+      return;
+    }
+
     try {
-      const res = await fetch(getFullURL("/inventoryCount"));
+      const res = await fetch(getFullURL(`/inventoryCount/by-date/${dateOrdered}`));
       const data = await res.json();
 
       setallInventory(data.data || []);
@@ -122,7 +126,7 @@ export default function InventoryCount() {
           <h1>Inventory Count</h1>
           <form onSubmit={handleSubmit}>
             <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-              <label>
+              {/* <label>
                 order_id: <br />
                 <input
                   required
@@ -130,7 +134,7 @@ export default function InventoryCount() {
                   onChange={(e) => setorderId(e.target.value)}
                   style={{ textAlign: "center" }}
                 />
-              </label>
+              </label> */}
               <br />
               <label>
                 date ordered: <br />
@@ -188,7 +192,7 @@ export default function InventoryCount() {
                   style={{ textAlign: "center" }}
                 />
 
-                <button
+                {/* <button
                   type="button"
                   onClick={addRow}
                   style={{
@@ -198,7 +202,7 @@ export default function InventoryCount() {
                   }}
                 >
                   Add Row
-                </button>
+                </button> */}
               </div>
             ))}
             <br />
@@ -229,7 +233,7 @@ export default function InventoryCount() {
                   style={{ position: "sticky", top: 0, background: "#ddd" }}
                 >
                   <tr>
-                    <th>Order ID</th>
+                    {/* <th>Order ID</th> */}
                     <th>Date Ordered</th>
                     <th>Shelf ID</th>
                     <th>Quantity</th>
@@ -241,7 +245,7 @@ export default function InventoryCount() {
                     .sort((a, b) => a.order_id - b.order_id)
                     .map((part, index) => (
                       <tr key={part._id || index}>
-                        <td>{part.order_id}</td>
+                        {/* <td>{part.order_id}</td> */}
                         <td>
                           {new Date(part.date_ordered).toLocaleDateString()}
                         </td>
